@@ -1,0 +1,12 @@
+google-api-python-client>=2.70.0
+youtube-transcript-api>=0.6.0
+pandas>=2.0
+tqdm
+yt-dlp
+sentence-transformers
+scikit-learn
+pyarrow
+numpy
+python-dotenv
+tensorflow>=2.12
+apache-beam[gcp]  # optional, remove if not needed
