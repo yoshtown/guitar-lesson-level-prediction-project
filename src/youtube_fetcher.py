@@ -13,6 +13,7 @@ import logging
 from typing import List, Dict, Optional
 from googleapiclient.discovery import build
 import json
+from rapidfuzz import fuzz, process
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -94,20 +95,54 @@ class YouTubeFetcher:
 				title = snippet.get("title", "") or ""
 				description = snippet.get("description", "") or ""
 
-				beginner = "beginner"
-				intermediate = "intermediate"
-				advanced = "advance"
-				level = ""
+				levels = {
+					"beginner": ["beginner", "basic", "fundamental", "easy" "open chord", "sus"],
+					"intermediate": ["intermediate", "bar chord", 
+								"7th", "seventh", "add9",
+								"beautiful chord", "add6/9"],
+					"advance": ["advance", "4th chord", "fourth chord" "Drop 2 voicings"]
+				}
+
+				priority = {
+					"advanced": 3,
+					"intermediate": 2,
+					"beginner": 1
+				}
+
+				level = detect_level(title, description, levels, priority)
+
+				# beginner = ["beginner", "basic", "open chord", "sus"]
+				# intermediate = ["intermediate", "bar chord", 
+				# 				"7th", "seventh", "add9",
+				# 				"beautiful chord", "add6/9"]
+				# advanced = ["advance", "4th chord", "fourth chord" "Drop 2 voicings"]
+
+				# level = "unknown"
 				topic = ""
 
-				if beginner in title.lower() or beginner in description.lower():
-					level = beginner
-				elif intermediate in title.lower() or intermediate in description.lower():
-					level = intermediate
-				elif advanced in title.lower() or advanced in description.lower():
-					level = advanced
-				else:
-					level = "unknown"
+				# title_1 = title.lower()
+				# description_1 = description.lower()
+				# text = f"{title} {description}".lower()
+
+
+				# for lvl_name, keywords in levels.items():
+				# 	if any(fuzzy_contains(kw, text) for kw in keywords):
+				# 		level = lvl_name
+				# 		break
+
+				# for lvl_name, keywords in levels.items():
+				# 	if any(kw in title_1 or kw in description_1 for kw in keywords):
+				# 		level = lvl_name
+				# 		break
+
+				# if beginner in title.lower() or beginner in description.lower():
+				# 	level = beginner
+				# elif intermediate in title.lower() or intermediate in description.lower():
+				# 	level = intermediate
+				# elif advanced in title.lower() or advanced in description.lower():
+				# 	level = advanced
+				# else:	level = "unknown"
+				# 
 
 				out.append({
 						"video_id": item.get("id"),
@@ -140,3 +175,48 @@ class YouTubeFetcher:
 		meta = self.get_videos_metadata(ids)
 		# transcripts handled externally to keep single responsibility
 		return meta
+
+def fuzzy_contains(keyword: str, text: str, threshold=80):
+	# threshold 0-100; higher means stricter
+	return fuzz.partial_ratio(keyword.lower(), text) >= threshold
+
+def detect_level(title, description, levels, priority, fuzzy_threshold=80):
+	"""
+	Detect difficulty level based on fuzzy keyword matching
+	with prioritization rules.
+
+	Parameters:
+		title (str): Video title.
+		description (str): Video description.
+		levels (dict): Mapping of level_name -> list of keywords.
+		priority (dict): Mapping of level_name -> priority score (higher = more important).
+		fuzzy_threshold (int): Minimum fuzzy match (0-100) for keyword acceptance.
+
+	Returns:
+		str: Detected level name or "unknown".
+	"""
+
+	text = f"{title} {description}".lower()
+
+	matches = []
+
+	for lvl_name, keywords in levels.items():
+		best_score = 0
+
+		for kw in keywords:
+			score = fuzz.partial_ratio(kw.lower(), text)
+			if score > best_score:
+				best_score = score
+
+		if best_score >= fuzzy_threshold:
+			matches.append((lvl_name, best_score))
+
+	if not matches:
+		return "unknown"
+
+	matches.sort(
+		key=lambda x: (priority.get(x[0], 0), x[1]),
+		reverse=True
+	)
+
+	return matches[0][0]
