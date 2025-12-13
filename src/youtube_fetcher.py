@@ -14,6 +14,7 @@ from typing import List, Dict, Optional
 from googleapiclient.discovery import build
 import json
 from rapidfuzz import fuzz, process
+from src.text_classifiers import classify_text
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -95,21 +96,10 @@ class YouTubeFetcher:
 				title = snippet.get("title", "") or ""
 				description = snippet.get("description", "") or ""
 
-				levels = {
-					"beginner": ["beginner", "basic", "fundamental", "easy" "open chord", "sus"],
-					"intermediate": ["intermediate", "bar chord", 
-								"7th", "seventh", "add9",
-								"beautiful chord", "add6/9"],
-					"advance": ["advance", "4th chord", "fourth chord" "Drop 2 voicings"]
-				}
+				classification = classify_text(title, description)
 
-				priority = {
-					"advanced": 3,
-					"intermediate": 2,
-					"beginner": 1
-				}
-
-				level = detect_level(title, description, levels, priority)
+				level = classification["level"]
+				topic = classification["topic"]
 
 				# beginner = ["beginner", "basic", "open chord", "sus"]
 				# intermediate = ["intermediate", "bar chord", 
@@ -118,7 +108,7 @@ class YouTubeFetcher:
 				# advanced = ["advance", "4th chord", "fourth chord" "Drop 2 voicings"]
 
 				# level = "unknown"
-				topic = ""
+				
 
 				# title_1 = title.lower()
 				# description_1 = description.lower()
@@ -176,47 +166,47 @@ class YouTubeFetcher:
 		# transcripts handled externally to keep single responsibility
 		return meta
 
-def fuzzy_contains(keyword: str, text: str, threshold=80):
-	# threshold 0-100; higher means stricter
-	return fuzz.partial_ratio(keyword.lower(), text) >= threshold
+# def fuzzy_contains(keyword: str, text: str, threshold=80):
+# 	# threshold 0-100; higher means stricter
+# 	return fuzz.partial_ratio(keyword.lower(), text) >= threshold
 
-def detect_level(title, description, levels, priority, fuzzy_threshold=80):
-	"""
-	Detect difficulty level based on fuzzy keyword matching
-	with prioritization rules.
+# def detect_level(title, description, levels, priority, fuzzy_threshold=80):
+# 	"""
+# 	Detect difficulty level based on fuzzy keyword matching
+# 	with prioritization rules.
 
-	Parameters:
-		title (str): Video title.
-		description (str): Video description.
-		levels (dict): Mapping of level_name -> list of keywords.
-		priority (dict): Mapping of level_name -> priority score (higher = more important).
-		fuzzy_threshold (int): Minimum fuzzy match (0-100) for keyword acceptance.
+# 	Parameters:
+# 		title (str): Video title.
+# 		description (str): Video description.
+# 		levels (dict): Mapping of level_name -> list of keywords.
+# 		priority (dict): Mapping of level_name -> priority score (higher = more important).
+# 		fuzzy_threshold (int): Minimum fuzzy match (0-100) for keyword acceptance.
 
-	Returns:
-		str: Detected level name or "unknown".
-	"""
+# 	Returns:
+# 		str: Detected level name or "unknown".
+# 	"""
 
-	text = f"{title} {description}".lower()
+# 	text = f"{title} {description}".lower()
 
-	matches = []
+# 	matches = []
 
-	for lvl_name, keywords in levels.items():
-		best_score = 0
+# 	for lvl_name, keywords in levels.items():
+# 		best_score = 0
 
-		for kw in keywords:
-			score = fuzz.partial_ratio(kw.lower(), text)
-			if score > best_score:
-				best_score = score
+# 		for kw in keywords:
+# 			score = fuzz.partial_ratio(kw.lower(), text)
+# 			if score > best_score:
+# 				best_score = score
 
-		if best_score >= fuzzy_threshold:
-			matches.append((lvl_name, best_score))
+# 		if best_score >= fuzzy_threshold:
+# 			matches.append((lvl_name, best_score))
 
-	if not matches:
-		return "unknown"
+# 	if not matches:
+# 		return "unknown"
 
-	matches.sort(
-		key=lambda x: (priority.get(x[0], 0), x[1]),
-		reverse=True
-	)
+# 	matches.sort(
+# 		key=lambda x: (priority.get(x[0], 0), x[1]),
+# 		reverse=True
+# 	)
 
-	return matches[0][0]
+# 	return matches[0][0]
