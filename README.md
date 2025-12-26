@@ -121,12 +121,13 @@ This system demonstrates how classical machine learning can:
 ## Future Improvements
 - Expand dataset size and improve class balance
 - Incorporate linguistic complexity metrics
-- Add channel-level priors
+- Identify lessons by topics
 - Explore hierarchical classification (Beginner → Intermediate → Advanced)
 
 ---
 
 ## License
 MIT License
+
 
 
