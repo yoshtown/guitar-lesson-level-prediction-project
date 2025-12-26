@@ -1,7 +1,6 @@
-# YouTube Guitar Lessons — Data Pipeline
+# YouTube Guitar Lesson Difficulty Classifier
 
-## Overview
-This repo fetches YouTube video metadata and transcripts for a query (e.g., "guitar lessons"), saves to `data/raw/`, and provides cleaning + a simple TensorFlow demo.
+Classical machine learning system for classifying YouTube guitar lesson videos into Beginner, Intermediate, and Advanced levels using NLP and structured metadata.
 
-## Setup
-1. Create Python environment:
+
+
