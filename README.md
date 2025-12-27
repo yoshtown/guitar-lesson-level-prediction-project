@@ -122,12 +122,14 @@ This system demonstrates how classical machine learning can:
 - Expand dataset size and improve class balance
 - Incorporate linguistic complexity metrics
 - Identify lessons by topics
+- Upgrade retrieval of youtube description - drop details that are not related to topic of video
 - Explore hierarchical classification (Beginner → Intermediate → Advanced)
 
 ---
 
 ## License
 MIT License
+
 
 
 
