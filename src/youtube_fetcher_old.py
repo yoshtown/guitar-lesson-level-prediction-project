@@ -41,7 +41,7 @@ class YouTubeFetcher:
 			to_fetch = min(SEARCH_PAGE_SIZE, max_results - fetched)
 			req = self.youtube.search().list(
 					q=query,
-					part="id,snippet",
+					part="id",
 					type="video",
 					maxResults=to_fetch,
 					pageToken=next_page_token
@@ -49,20 +49,8 @@ class YouTubeFetcher:
 			resp = req.execute()
 			for item in resp.get("items", []):
 				vid = item.get("id", {}).get("videoId")
-				snippet = item.get("snippet", {})
 				if vid:
-					title = snippet.get("title")
-					description = snippet.get("description")
-
-					classification_text = classify_text(title, description)
-
-					video_ids.append({
-						"video_id": vid,
-						"title": title,
-						"description": description,
-						"level": classification_text["level"],
-						"topic": classification_text["topic"]
-						})
+					video_ids.append(vid)
 				fetched = len(video_ids)
 				next_page_token = resp.get("nextPageToken")
 				logger.info("Collected %d/%d ids", fetched, max_results)
@@ -90,9 +78,10 @@ class YouTubeFetcher:
 				).execute()
 
 			items = resp.get("items", [])
-			logger.info("Received %d items in metadata batch %d", len(items), i // BATCH + 1)
+			logger.info("Recieved %d items in metadata batch %d", len(items), i // BATCH + 1)
 
 			for item in items:
+				# print("Inside nested loop in get_videos_metadata()")
 				snippet = item.get("snippet", {})
 				stats = item.get("statistics", {})
 				content = item.get("contentDetails", {})
@@ -136,7 +125,7 @@ class YouTubeFetcher:
 
 
 	def search_and_fetch(self, query: str, max_results: int = 200, transcripts: bool = False):
-		meta = self.search_video_ids(query, max_results=max_results)
-		# meta = self.get_videos_metadata(ids)
+		ids = self.search_video_ids(query, max_results=max_results)
+		meta = self.get_videos_metadata(ids)
 		# transcripts handled externally to keep single responsibility
 		return meta

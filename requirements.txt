@@ -9,4 +9,4 @@ pyarrow
 numpy
 python-dotenv
 tensorflow>=2.12
-apache-beam[gcp]  # optional, remove if not needed
+apache-beam[gcp]
