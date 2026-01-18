@@ -9,7 +9,7 @@ levels = {
 	"intermediate": ["intermediate", "bar chord", 
 				"7th", "seventh", "add9",
 				"beautiful chord", "add6/9"],
-	"advance": ["advance", "4th chord", "fourth chord" "Drop 2 voicings"]
+	"advance": ["advance", "4th chord", "fourth chord" "Drop 2 voicings", "4th", "fourth"]
 }
 
 topics = {
@@ -18,7 +18,7 @@ topics = {
 	"Technique": ["pick", "strumming", "alternate picking"],
 	"Arpeggios": ["arp", "arpeggio"],
 	"Learning songs": ["song", "play", "cover", ],
-	"Improvisation": ["improv", "improvisation","solo", "phrasing"],
+	"Improvisation": ["improv", "improvisation", "solo", "phrasing"],
 	"Other Topics": []
 }
 
