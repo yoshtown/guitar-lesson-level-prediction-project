@@ -30,18 +30,21 @@ def fetch_all_levels(
 
     for level, query in LEVEL_QUERIES.items():
         print(f"\nFetching {level} videos...")
-        results = fetcher.search_and_fetch(
-            query=query,
-            max_results=max_per_level,
-            transcripts=transcripts,
-        )
+        try:
+            results = fetcher.search_and_fetch(
+                query=query,
+                max_results=max_per_level,
+                transcripts=transcripts,
+            )
+        except:
+            print("limit reached")
+        finally:
+            # Tag each video with its level based on search
+            for video in results:
+                video["search_lesson_level"] = level
 
-        # Tag each video with its level
-        for video in results:
-            video["lesson_level"] = level
-
-        all_results.extend(results)
-        print(f"{len(results)} videos fetched for {level}")
+            all_results.extend(results)
+            print(f"{len(results)} videos fetched for {level}")
 
     return all_results
 

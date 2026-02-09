@@ -10,3 +10,8 @@ numpy
 python-dotenv
 tensorflow>=2.12
 apache-beam[gcp]
+ipykernel
+jupyter
+seaborn
+mord
+xgboost
