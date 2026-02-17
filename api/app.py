@@ -26,14 +26,14 @@ def predict():
 
 		# Predict
 		prediction = pipeline.predict([text])
-		# probabilities = pipeline.predict_probab([text])
+		probabilities = pipeline.predict_probab([text])
 
 		# Map prediction to label
 		labels = ['Beginner', 'Intermediate', 'Advanced']
 
 		return jsonify({
-			'prediction': prediction[0]
-			# 'confidence': float(max(probabilities))
+			'prediction': prediction[0],
+			'confidence': float(max(probabilities[0]))
 			# 'probabilities': {
             #     labels[i]: float(probabilities[i])
             #     for i in range(len(probabilities))
