@@ -32,8 +32,12 @@ def predict():
 		labels = ['Beginner', 'Intermediate', 'Advanced']
 
 		return jsonify({
-			'prediction': prediction[0],
-			'confidence': float(max(probabilities))
+			'prediction': prediction,
+			'confidence': float(max(probabilities)),
+			'probabilities': {
+                labels[i]: float(probabilities[i])
+                for i in range(len(probabilities))
+            }
 		})
 
 	except Exception as e:
