@@ -28,7 +28,7 @@ function initClassifier() {
 
 async function classifyVideo(title, description) {
   try {
-    const response = await fetch('http://localhost:5000/predict', {  // Change to your deployed URL
+    const response = await fetch('https://guitar-lesson-classifier-api.onrender.com/predict', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
