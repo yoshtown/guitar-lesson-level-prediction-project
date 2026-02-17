@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    h3 {
+      margin-top: 0;
+      color: #1a73e8;
+    }
+    .status {
+      padding: 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .info {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .badge-examples {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .badge-example {
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+      color: white;
+    }
+    .beginner { background-color: #4CAF50; }
+    .intermediate { background-color: #FF9800; }
+    .advanced { background-color: #F44336; }
+    
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover {
+      background: #1557b0;
+    }
+  </style>
+</head>
+<body>
+  <h3>🎸 Guitar Lesson Classifier</h3>
+  
+  <div id="status" class="status">Loading...</div>
+  
+  <p class="info">This extension automatically classifies YouTube guitar lessons by difficulty level.</p>
+  
+  <div class="badge-examples">
+    <span class="badge-example beginner">Beginner</span>
+    <span class="badge-example intermediate">Intermediate</span>
+    <span class="badge-example advanced">Advanced</span>
+  </div>
+  
+  <p class="info" style="font-size: 11px;">
+    The classification appears below the video title when watching a guitar lesson.
+  </p>
+  
+  <!-- Optional: Add a settings button -->
+  <!-- <button id="settings-btn">Settings</button> -->
+  
+  <script src="popup.js"></script>
+</body>
+</html>
