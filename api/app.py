@@ -26,20 +26,19 @@ def predict():
 
 		# Predict
 		prediction = pipeline.predict([text])
-		probabilities = pipeline.predict_probab([text])
+		probabilities = pipeline.predict_proba([text])
 
 		# Map prediction to label
 		labels = ['Beginner', 'Intermediate', 'Advanced']
 
 		return jsonify({
 			'prediction': prediction[0],
-			'confidence': float(max(probabilities[0]))
-			# 'probabilities': {
-            #     labels[i]: float(probabilities[i])
-            #     for i in range(len(probabilities))
-            # }
+			'confidence': float(max(probabilities[0])),
+			'probabilities': {
+                labels[i]: float(probabilities[0][i])
+                for i in range(len(labels))
+            }
 		})
-
 	except Exception as e:
 		return jsonify({"error": str(e)}), 500
 
