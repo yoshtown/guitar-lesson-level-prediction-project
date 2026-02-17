@@ -32,7 +32,7 @@ def predict():
 		labels = ['Beginner', 'Intermediate', 'Advanced']
 
 		return jsonify({
-			'prediction': prediction
+			'prediction': prediction[0]
 			# 'confidence': float(max(probabilities))
 			# 'probabilities': {
             #     labels[i]: float(probabilities[i])
