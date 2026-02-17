@@ -27,7 +27,6 @@ env.old/
 *.swp
 
 # Ignore model outputs
-*.pkl
 *.h5
 *.pt
 *.onnx
