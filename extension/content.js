@@ -1,32 +1,47 @@
-// Wait for page to load
+console.log('🎸 Extension loaded!');
+
+// Main classifier function
 function initClassifier() {
+  console.log('🎸 initClassifier called');
+  console.log('🎸 Current URL:', location.href);
+  
+  // IMPORTANT: Remove old badge first
+  const oldBadge = document.getElementById('guitar-difficulty-badge');
+  console.log('🎸 Old badge exists?', !!oldBadge);
+  
+  if (oldBadge) {
+    oldBadge.remove();
+    console.log('🎸 Old badge removed');
+  }
+  
   // Get video title
   const titleElement = document.querySelector('h1.ytd-watch-metadata yt-formatted-string');
-  
-  // Get description (you may need to click "Show more" first)
-  const descriptionElement = document.querySelector('#description-inline-expander yt-formatted-string');
+  console.log('🎸 Title element found?', !!titleElement);
   
   if (!titleElement) {
-    console.log('Not on a video page or page not loaded');
+    console.log('🎸 Not on a video page or page not loaded - waiting...');
     return;
   }
   
   const title = titleElement.textContent.trim();
-  const description = descriptionElement ? descriptionElement.textContent.trim() : '';
+  console.log('🎸 Video title:', title);
   
-  // Check if we've already added the badge
-  if (document.getElementById('guitar-difficulty-badge')) {
-    return;
-  }
+  // Get description
+  const descriptionElement = document.querySelector('#description-inline-expander yt-formatted-string');
+  const description = descriptionElement ? descriptionElement.textContent.trim() : '';
+  console.log('🎸 Description length:', description.length);
   
   // Show loading state
-  createBadge('Analyzing...', 'loading');
+  createBadge('Analyzing...', 'loading', titleElement);
+  console.log('🎸 Loading badge created');
   
   // Call API
-  classifyVideo(title, description);
+  classifyVideo(title, description, titleElement);
 }
 
-async function classifyVideo(title, description) {
+async function classifyVideo(title, description, titleElement) {
+  console.log('🎸 Calling API...');
+  
   try {
     const response = await fetch('https://guitar-lesson-classifier-api.onrender.com/predict', {
       method: 'POST',
@@ -36,9 +51,13 @@ async function classifyVideo(title, description) {
       body: JSON.stringify({ title, description })
     });
     
+    console.log('🎸 API response status:', response.status);
+    
     const data = await response.json();
+    console.log('🎸 API response data:', data);
     
     if (data.error) {
+      console.log('🎸 API returned error:', data.error);
       updateBadge('Error', 'error');
       return;
     }
@@ -46,25 +65,24 @@ async function classifyVideo(title, description) {
     const level = data.prediction;
     const confidence = (data.confidence * 100).toFixed(0);
     
+    console.log('🎸 Prediction:', level, 'Confidence:', confidence + '%');
+    
     updateBadge(`${level} (${confidence}%)`, level.toLowerCase());
     
   } catch (error) {
-    console.error('Classification error:', error);
+    console.error('🎸 Classification error:', error);
     updateBadge('Error', 'error');
   }
 }
 
-function createBadge(text, className) {
+function createBadge(text, className, titleElement) {
   const badge = document.createElement('div');
   badge.id = 'guitar-difficulty-badge';
   badge.className = `difficulty-badge ${className}`;
   badge.textContent = text;
   
-  // Insert badge near the title
-  const titleElement = document.querySelector('h1.ytd-watch-metadata');
-  if (titleElement) {
-    titleElement.parentElement.insertBefore(badge, titleElement.nextSibling);
-  }
+  // Insert after title
+  titleElement.parentElement.insertBefore(badge, titleElement.nextSibling);
 }
 
 function updateBadge(text, className) {
@@ -72,6 +90,9 @@ function updateBadge(text, className) {
   if (badge) {
     badge.textContent = text;
     badge.className = `difficulty-badge ${className}`;
+    console.log('🎸 Badge updated to:', text);
+  } else {
+    console.log('🎸 Warning: Could not find badge to update');
   }
 }
 
@@ -88,6 +109,7 @@ new MutationObserver(() => {
   const url = location.href;
   if (url !== lastUrl) {
     lastUrl = url;
-    setTimeout(initClassifier, 1000); // Wait for page to update
+    console.log('🎸 URL changed to:', url);
+    setTimeout(initClassifier, 1500); // Wait for YouTube to update DOM
   }
 }).observe(document, { subtree: true, childList: true });
