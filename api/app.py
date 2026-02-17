@@ -34,10 +34,10 @@ def predict():
 		return jsonify({
 			'prediction': prediction,
 			'confidence': float(max(probabilities)),
-			'probabilities': {
-                labels[i]: float(probabilities[i])
-                for i in range(len(probabilities))
-            }
+			# 'probabilities': {
+            #     labels[i]: float(probabilities[i])
+            #     for i in range(len(probabilities))
+            # }
 		})
 
 	except Exception as e:
