@@ -81,10 +81,18 @@ function createBadge(text, className) {
   badge.className = `difficulty-badge ${className}`;
   badge.textContent = text;
   
-  // Insert badge near the title (BELOW it)
-  const titleElement = document.querySelector('h1.ytd-watch-metadata');
-  if (titleElement) {
-    titleElement.parentElement.insertBefore(badge, titleElement.nextSibling);
+  // Make sure it's on its own line with proper styling
+  badge.style.display = 'block';
+  badge.style.marginTop = '12px';
+  badge.style.marginBottom = '12px';
+  
+  // Find the title container and insert after it
+  const titleWrapper = document.querySelector('#title.ytd-watch-metadata');
+  if (titleWrapper) {
+    titleWrapper.parentElement.insertBefore(badge, titleWrapper.nextSibling);
+    console.log('🎸 Badge created below title');
+  } else {
+    console.log('🎸 Warning: Could not find title wrapper');
   }
 }
 

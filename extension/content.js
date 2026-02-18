@@ -32,14 +32,14 @@ function initClassifier() {
   console.log('🎸 Description length:', description.length);
   
   // Show loading state
-  createBadge('Analyzing...', 'loading', titleElement);
+  createBadge('Analyzing...', 'loading');
   console.log('🎸 Loading badge created');
   
   // Call API
-  classifyVideo(title, description, titleElement);
+  classifyVideo(title, description);
 }
 
-async function classifyVideo(title, description, titleElement) {
+async function classifyVideo(title, description) {
   console.log('🎸 Calling API...');
   
   try {
@@ -75,14 +75,25 @@ async function classifyVideo(title, description, titleElement) {
   }
 }
 
-function createBadge(text, className, titleElement) {
+function createBadge(text, className) {
   const badge = document.createElement('div');
   badge.id = 'guitar-difficulty-badge';
   badge.className = `difficulty-badge ${className}`;
   badge.textContent = text;
   
-  // Insert after title
-  titleElement.parentElement.insertBefore(badge, titleElement.nextSibling);
+  // Make sure it's on its own line with proper styling
+  badge.style.display = 'block';
+  badge.style.marginTop = '12px';
+  badge.style.marginBottom = '12px';
+  
+  // Find the title container and insert after it
+  const titleWrapper = document.querySelector('#title.ytd-watch-metadata');
+  if (titleWrapper) {
+    titleWrapper.parentElement.insertBefore(badge, titleWrapper.nextSibling);
+    console.log('🎸 Badge created below title');
+  } else {
+    console.log('🎸 Warning: Could not find title wrapper');
+  }
 }
 
 function updateBadge(text, className) {
