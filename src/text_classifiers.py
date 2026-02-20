@@ -19,7 +19,8 @@ topics = {
 	"Arpeggios": ["arp", "arpeggio"],
 	"Learning songs": ["song", "play", "cover", ],
 	"Improvisation": ["improv", "improvisation", "solo", "phrasing"],
-	"Other Topics": []
+	"Other Topics": [],
+	"No Guitar": []
 }
 
 priority = {

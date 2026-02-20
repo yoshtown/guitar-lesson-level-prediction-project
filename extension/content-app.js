@@ -32,18 +32,52 @@ function initClassifier() {
   console.log('🎸 Description length:', description.length);
   
   // Show loading state
-  createBadge('Analyzing...', 'loading');
+  createBadge('Analyzing...', 'loading', titleElement);
   console.log('🎸 Loading badge created');
   
   // Call API
-  classifyVideo(title, description);
+  classifyVideo(title, description, titleElement);
 }
 
-async function classifyVideo(title, description) {
+async function fetchWithRetry(url, options={}, retries=3, baseDelay=1500) {
+  for (let attempt=0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000)
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok){
+        throw new Error('HTTP ${response.status}');
+      }
+
+      return response;
+    } catch (err){
+      clearTimeout(timeout);
+
+      if (attempt === retries){
+        throw err;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt);
+      console.log('  Retry attempt ${attempt + 1}  in ${delay}ms');
+      await new Promise(res => setTimeout(res, delay));
+    }
+  }
+}
+
+async function classifyVideo(title, description, titleElement) {
   console.log('🎸 Calling API...');
   
   try {
-    const response = await fetch('https://guitar-lesson-classifier-api.onrender.com/predict', {
+    updateBadge('reloading', 'loading')
+
+    const response = await fetchWithRetry('https://guitar-lesson-classifier-api.onrender.com/predict', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,29 +105,23 @@ async function classifyVideo(title, description) {
     
   } catch (error) {
     console.error('🎸 Classification error:', error);
-    updateBadge('Error', 'error');
+    updateBadge('Server Unavailable', 'error');
   }
 }
 
-function createBadge(text, className) {
+function createBadge(text, className, titleElement) {
   const badge = document.createElement('div');
   badge.id = 'guitar-difficulty-badge';
   badge.className = `difficulty-badge ${className}`;
   badge.textContent = text;
   
-  // Make sure it's on its own line with proper styling
-  badge.style.display = 'block';
-  badge.style.marginTop = '12px';
-  badge.style.marginBottom = '12px';
+  // Add inline spacing to separate from title
+  badge.style.marginLeft = '16px';
+  badge.style.display = 'inline-block';
+  badge.style.verticalAlign = 'middle';
   
-  // Find the title container and insert after it
-  const titleWrapper = document.querySelector('#title.ytd-watch-metadata');
-  if (titleWrapper) {
-    titleWrapper.parentElement.insertBefore(badge, titleWrapper.nextSibling);
-    console.log('🎸 Badge created below title');
-  } else {
-    console.log('🎸 Warning: Could not find title wrapper');
-  }
+  // Insert after title
+  titleElement.parentElement.insertBefore(badge, titleElement.nextSibling);
 }
 
 function updateBadge(text, className) {
@@ -107,12 +135,17 @@ function updateBadge(text, className) {
   }
 }
 
-// Run when page loads
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initClassifier);
-} else {
-  initClassifier();
-}
+// // Run when page loads
+// if (document.readyState === 'loading') {
+//   document.addEventListener('DOMContentLoaded', initClassifier);
+// } else {
+//   initClassifier();
+// }
+
+// Run classifier on YouTube internal navigation events
+window.addEventListener('yt-navigate-finish', () => {
+  setTimeout(initClassifier, 1500)
+});
 
 // Re-run when navigating to new video (YouTube is a SPA)
 let lastUrl = location.href;
