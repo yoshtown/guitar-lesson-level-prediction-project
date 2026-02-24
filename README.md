@@ -126,10 +126,3 @@ This system demonstrates how classical machine learning can:
 - Explore hierarchical classification (Beginner → Intermediate → Advanced)
 
 ---
-
-## License
-MIT License
-
-
-
-

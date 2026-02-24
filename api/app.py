@@ -9,10 +9,41 @@ CORS(app) # Allow requests from extension
 
 # Load models from same directory as app.py
 pipeline = joblib.load("pipeline.pkl")
+rf_model = joblib.load("rf_model.pkl")
+
+# Map prediction to label
+labels = ['Beginner', 'Intermediate', 'Advanced']
 
 @app.route("/")
 def home():
     return "API is running"
+
+@app.route("/predict_tree", methods=['POST'])
+def predict_tree():
+	try:
+		data = request.json
+		title = data.get('title', '')
+		description = data.get('description', '')
+
+		# Combine title and description (same as training)
+		text = f"{title} {description}"
+
+		# Predict
+		prediction rf_model.predict([text])
+		probabilities = rf_model.predict_proba([text])
+
+		return jsonify({
+				'prediction': prediction[0],
+				'confidence': max(probabilities[0]),
+				'probabilities': {
+					labels[i]: float(probabilities[0][i])
+					for i in range(len(labels))
+				}
+			})
+	except Exception as e:
+		return jsonify({
+				'error': str(e)
+			}), 500
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -27,9 +58,6 @@ def predict():
 		# Predict
 		prediction = pipeline.predict([text])
 		probabilities = pipeline.predict_proba([text])
-
-		# Map prediction to label
-		labels = ['Beginner', 'Intermediate', 'Advanced']
 
 		return jsonify({
 			'prediction': prediction[0],
