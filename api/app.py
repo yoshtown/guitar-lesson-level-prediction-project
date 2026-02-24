@@ -10,6 +10,7 @@ CORS(app) # Allow requests from extension
 # Load models from same directory as app.py
 pipeline = joblib.load("pipeline.pkl")
 rf_model = joblib.load("rf_model.pkl")
+vectorizer = joblilb.load("vectorizer.pkl")
 
 # Map prediction to label
 labels = ['Beginner', 'Intermediate', 'Advanced']
@@ -28,9 +29,11 @@ def predict_tree():
 		# Combine title and description (same as training)
 		text = f"{title} {description}"
 
+		text_vectorized = vectorizer.transform([text])
+
 		# Predict
-		prediction = rf_model.predict([text])
-		probabilities = rf_model.predict_proba([text])
+		prediction = rf_model.predict(text_vectorized)
+		probabilities = rf_model.predict_proba(text_vectorized)
 
 		return jsonify({
 				'prediction': prediction[0],
