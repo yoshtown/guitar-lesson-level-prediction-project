@@ -29,7 +29,7 @@ def predict_tree():
 		text = f"{title} {description}"
 
 		# Predict
-		prediction rf_model.predict([text])
+		prediction = rf_model.predict([text])
 		probabilities = rf_model.predict_proba([text])
 
 		return jsonify({
