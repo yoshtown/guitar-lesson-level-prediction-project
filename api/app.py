@@ -10,7 +10,7 @@ CORS(app) # Allow requests from extension
 # Load models from same directory as app.py
 pipeline = joblib.load("pipeline.pkl")
 rf_model = joblib.load("rf_model.pkl")
-vectorizer = joblilb.load("vectorizer.pkl")
+vectorizer = joblib.load("vectorizer.pkl")
 
 # Map prediction to label
 labels = ['Beginner', 'Intermediate', 'Advanced']
