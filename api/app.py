@@ -13,7 +13,8 @@ rf_model = joblib.load("rf_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
 # Map prediction to label
-labels = ['Beginner', 'Intermediate', 'Advanced']
+#labels = ['Beginner', 'Intermediate', 'Advanced']
+classes = pipeline.classes_
 
 @app.route("/")
 def home():
@@ -39,8 +40,8 @@ def predict_tree():
 				'prediction': prediction[0],
 				'confidence': max(probabilities[0]),
 				'probabilities': {
-					labels[i]: float(probabilities[0][i])
-					for i in range(len(labels))
+					classes[i]: float(probabilities[0][i])
+					for i in range(len(classes))
 				}
 			})
 	except Exception as e:
@@ -66,8 +67,8 @@ def predict():
 			'prediction': prediction[0],
 			'confidence': float(max(probabilities[0])),
 			'probabilities': {
-                labels[i]: float(probabilities[0][i])
-                for i in range(len(labels))
+                classes[i]: float(probabilities[0][i])
+				for i in range(len(classes))
             }
 		})
 	except Exception as e:
