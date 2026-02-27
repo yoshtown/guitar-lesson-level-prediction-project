@@ -9,8 +9,6 @@ Learning guitar through YouTube is widely accessible, especially for self-taught
 
 This project applies **classical supervised machine learning** to automatically classify YouTube guitar lesson videos into difficulty levels using video metadata.
 
----
-
 ## Problem Statement
 While YouTube is a valuable resource for learning guitar, it presents several challenges:
 
@@ -21,20 +19,6 @@ While YouTube is a valuable resource for learning guitar, it presents several ch
 
 The core challenge is to infer **instructional difficulty** from noisy, unstructured metadata.
 
----
-
-## Data Collection
-- Collected YouTube video metadata using the YouTube Data API
-- Features included:
-  - Video title
-  - Description
-  - Tags
-  - Duration
-  - View count and like count
-  - Channel information
-
----
-
 ### Labeling Strategy: Programmatic Weak Supervision
 Since no labeled dataset exists for guitar lesson difficulty, I developed a keyword-based labeling function using domain expertise:
 
@@ -43,7 +27,6 @@ Since no labeled dataset exists for guitar lesson difficulty, I developed a keyw
 - **Advanced keywords**: "advance", "fourth chord" "Drop 2 voicings"...
 
 "Unknown" assigned to ambiguous cases.
----
 
 ### Feature Engineering
 - Combined video title + description
@@ -54,8 +37,6 @@ Since no labeled dataset exists for guitar lesson difficulty, I developed a keyw
 - Multinomial Naive Bayes
 - Random Forest Classifier
 - XGBoost Classifier
-
----
 
 ## Evaluation
 Models were evaluated using:
@@ -80,8 +61,6 @@ Keyword still requires updating which will likely improve the Intermediate/Advan
 - **Extension**: Vanilla JavaScript, Chrome Extension API
 - **Data**: YouTube Data API v3, Parquet
 
----
-
 ## Future Improvements
 - Expand dataset size and improve class balance
 - Expand keyword vocabulary
@@ -89,5 +68,3 @@ Keyword still requires updating which will likely improve the Intermediate/Advan
 - Upgrade retrieval of youtube description - drop details that are not the description of the video
 - Badge display on search results page as well
 - Badge only display only on guitar lesson vides
-
----
