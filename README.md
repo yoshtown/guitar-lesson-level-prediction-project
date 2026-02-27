@@ -19,6 +19,8 @@ While YouTube is a valuable resource for learning guitar, it presents several ch
 
 The core challenge is to infer **instructional difficulty** from noisy, unstructured metadata.
 
+## Technical Approach
+
 ### Labeling Strategy: Programmatic Weak Supervision
 Since no labeled dataset exists for guitar lesson difficulty, I developed a keyword-based labeling function using domain expertise:
 
