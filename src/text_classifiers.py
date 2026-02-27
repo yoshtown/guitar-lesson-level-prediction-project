@@ -6,7 +6,7 @@ from rapidfuzz import fuzz
 
 levels = {
 	"beginner": ["beginner", "basic", "fundamental", "easy" "open chord", "sus"],
-	"intermediate": ["intermediate", "bar chord", 
+	"intermediate": ["intermediate", "barre chord", 
 				"7th", "seventh", "add9",
 				"beautiful chord", "add6/9"],
 	"advance": ["advance", "4th chord", "fourth chord" "Drop 2 voicings", "4th", "fourth"]
