@@ -6,6 +6,9 @@ Automatically classifies YouTube guitar lessons as **Beginner**, **Intermediate*
 
 <img width="2559" height="1439" alt="image" src="https://github.com/user-attachments/assets/2a30ca82-5646-4fcd-b76b-700cb4842b05" />
 
+<img width="1188" height="220" alt="image" src="https://github.com/user-attachments/assets/8f803abc-4f99-4e63-bdba-09a6ae66dcdc" />
+
+
 
 ## Overview
 Learning guitar through YouTube is widely accessible, especially for self-taught players. However, instructional content on the platform lacks consistent difficulty labeling. As a result, learners often struggle to determine whether a lesson matches their current skill level or what the appropriate next step in their learning journey should be.
@@ -74,3 +77,4 @@ Keyword still requires updating which will likely improve the Intermediate/Advan
 - Badge display on search results page as well
 
 - Badge only display only on guitar lesson vides
+
