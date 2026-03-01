@@ -291,7 +291,7 @@
         </div>
         
         <div class="github-link">
-            <p>View the <a href="https://github.com/yoshtown/guitar-lesson-classifier" target="_blank">source code on GitHub</a></p>
+            <p>View the <a href="https://github.com/yoshtown/guitar-lesson-level-prediction-project" target="_blank">source code on GitHub</a></p>
         </div>
     </div>
     
@@ -374,11 +374,11 @@
                 const probs = [
                     { label: 'Beginner', value: data.probabilities.Beginner, color: '#4CAF50' },
                     { label: 'Intermediate', value: data.probabilities.Intermediate, color: '#FF9800' },
-                    { label: 'Advanced', value: data.probabilities.Advanced, color: '#F44336' }
+                    { label: 'Advance', value: data.probabilities.Advanced, color: '#F44336' }
                 ];
                 
                 probs.forEach(prob => {
-                    const percentage = (prob.value * 100).toFixed(1);
+                    const percentage = (data.probabilities[prob.label.toLowerCase()] * 100).toFixed(1);
                     probBars += `
                         <div class="prob-bar">
                             <span class="prob-label">${prob.label}:</span>
