@@ -75,10 +75,4 @@ Keyword still requires updating which will likely improve the Intermediate/Advan
 - Use topics feature to improve identification of lesson
 - Upgrade retrieval of youtube description - drop details that are not the description of the video
 - Badge display on search results page as well
-<<<<<<< HEAD
-- Badge only display only on guitar lesson videos
-=======
 
-- Badge only display only on guitar lesson vides
-
->>>>>>> 82ee0a9508efba5acbabf7471f199f762db73a12
