@@ -2,7 +2,7 @@
 
 Automatically classifies YouTube guitar lessons as **Beginner**, **Intermediate**, or **Advanced** using NLP and machine learning.
 
-[Live Demo - Chrome Extension](link) | [Try the API](https://github.com/yoshtown/guitar-lesson-level-prediction-project/blob/main/api-demo.html) | [Read Full Analysis](https://github.com/yoshtown/guitar-lesson-level-prediction-project/blob/main/notebooks/03_model.ipynb)
+[Live Demo - Chrome Extension](link) | [Try the API](https://yoshtown.github.io/guitar-lesson-level-prediction-project/api-demo.html) | [Read Full Analysis](https://github.com/yoshtown/guitar-lesson-level-prediction-project/blob/main/notebooks/03_model.ipynb)
 
 <img width="2559" height="1439" alt="image" src="https://github.com/user-attachments/assets/2a30ca82-5646-4fcd-b76b-700cb4842b05" />
 
@@ -75,6 +75,7 @@ Keyword still requires updating which will likely improve the Intermediate/Advan
 - Use topics feature to improve identification of lesson
 - Upgrade retrieval of youtube description - drop details that are not the description of the video
 - Badge display on search results page as well
+
 
 
 
