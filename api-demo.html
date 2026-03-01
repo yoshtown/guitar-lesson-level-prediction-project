@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Lesson Classifier - API Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .input-group {
+            margin: 25px 0;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .beginner { background: #4CAF50; }
+        .intermediate { background: #FF9800; }
+        .advanced { background: #F44336; }
+        
+        .confidence {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .details {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .details strong {
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .prob-bar {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        
+        .prob-label {
+            width: 120px;
+            font-weight: 500;
+        }
+        
+        .prob-value {
+            flex: 1;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .prob-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease-out;
+        }
+        
+        .prob-text {
+            margin-left: 10px;
+            font-weight: 600;
+            min-width: 50px;
+        }
+        
+        .examples {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .examples h4 {
+            color: #333;
+            margin-bottom: 12px;
+        }
+        
+        .example-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .github-link {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .github-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .github-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 Guitar Lesson Classifier</h1>
+        <p class="subtitle">Test the API by entering a video title and description below</p>
+        
+        <div class="input-group">
+            <label for="title">Video Title:</label>
+            <input type="text" id="title" placeholder="e.g., Beginner Guitar Chords - Learn Your First 3 Chords">
+        </div>
+        
+        <div class="input-group">
+            <label for="description">Video Description:</label>
+            <textarea id="description" placeholder="e.g., In this lesson you'll learn the three essential chords every beginner needs to know..."></textarea>
+        </div>
+        
+        <button onclick="classify()" id="classifyBtn">
+            <span id="btnText">Classify Video</span>
+        </button>
+        
+        <div class="result" id="result">
+            <h3>Classification Result</h3>
+            <div id="prediction"></div>
+            <div class="details" id="details"></div>
+        </div>
+        
+        <div class="examples">
+            <h4>Try these examples:</h4>
+            <button class="example-btn" onclick="loadExample('beginner')">Beginner Example</button>
+            <button class="example-btn" onclick="loadExample('intermediate')">Intermediate Example</button>
+            <button class="example-btn" onclick="loadExample('advanced')">Advanced Example</button>
+        </div>
+        
+        <div class="github-link">
+            <p>View the <a href="https://github.com/yourusername/guitar-lesson-classifier" target="_blank">source code on GitHub</a></p>
+        </div>
+    </div>
+    
+    <script>
+        const examples = {
+            beginner: {
+                title: "Beginner Guitar Lesson - Your First 3 Chords",
+                description: "Learn three essential open chords perfect for absolute beginners. No prior experience needed! We'll start with proper hand positioning and how to hold the guitar."
+            },
+            intermediate: {
+                title: "Barre Chord Mastery - F Major and Beyond",
+                description: "Master barre chords with proper technique. Learn the F major barre chord shape and how to move it up the neck. Includes fingerpicking patterns and chord progressions."
+            },
+            advanced: {
+                title: "Jazz Guitar - Modal Interchange and Voice Leading",
+                description: "Advanced concepts in jazz harmony. Explore modal interchange, voice leading techniques, and altered dominant scales. Understanding of chord construction and music theory required."
+            }
+        };
+        
+        // Load beginner example on page load
+        window.onload = function() {
+            loadExample('beginner');
+        };
+        
+        function loadExample(level) {
+            const example = examples[level];
+            document.getElementById('title').value = example.title;
+            document.getElementById('description').value = example.description;
+        }
+        
+        async function classify() {
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const button = document.getElementById('classifyBtn');
+            const btnText = document.getElementById('btnText');
+            
+            if (!title) {
+                alert('Please enter a video title');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('result');
+            const predictionDiv = document.getElementById('prediction');
+            const detailsDiv = document.getElementById('details');
+            
+            // Show loading state
+            button.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span>Classifying...';
+            resultDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('https://guitar-lesson-classifier-api.onrender.com/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, description })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
+                    button.disabled = false;
+                    btnText.textContent = 'Classify Video';
+                    return;
+                }
+                
+                // Display results
+                const level = data.prediction.toLowerCase();
+                const confidence = (data.confidence * 100).toFixed(0);
+                
+                predictionDiv.innerHTML = `
+                    <span class="badge ${level}">${data.prediction}</span>
+                    <span class="confidence">${confidence}% confidence</span>
+                `;
+                
+                // Create probability bars
+                let probBars = '<strong>Probability Distribution:</strong>';
+                const probs = [
+                    { label: 'Beginner', value: data.probabilities.Beginner, color: '#4CAF50' },
+                    { label: 'Intermediate', value: data.probabilities.Intermediate, color: '#FF9800' },
+                    { label: 'Advanced', value: data.probabilities.Advanced, color: '#F44336' }
+                ];
+                
+                probs.forEach(prob => {
+                    const percentage = (prob.value * 100).toFixed(1);
+                    probBars += `
+                        <div class="prob-bar">
+                            <span class="prob-label">${prob.label}:</span>
+                            <div class="prob-value">
+                                <div class="prob-fill" style="width: ${percentage}%; background: ${prob.color};"></div>
+                            </div>
+                            <span class="prob-text">${percentage}%</span>
+                        </div>
+                    `;
+                });
+                
+                detailsDiv.innerHTML = probBars;
+                resultDiv.style.display = 'block';
+                
+            } catch (error) {
+                alert(`Error: ${error.message}\n\nNote: The API may take 30-60 seconds to wake up on first request (free tier hosting).`);
+            } finally {
+                button.disabled = false;
+                btnText.textContent = 'Classify Video';
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('description').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                classify();
+            }
+        });
+    </script>
+</body>
+</html>
