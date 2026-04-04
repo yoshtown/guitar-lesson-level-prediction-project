@@ -1,0 +1,14 @@
+artifact_uri: file:///d:/OneDrive/Documents/Content Folder/Data Science/guitar-lesson-level-prediction-project/notebooks/mlruns/874064884258168798/f23cc956f9764c2c9ee3438864e43d1c/artifacts
+end_time: 1773955813782
+entry_point_name: ''
+experiment_id: '874064884258168798'
+lifecycle_stage: active
+run_id: f23cc956f9764c2c9ee3438864e43d1c
+run_name: best_log_reg
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1773955798178
+status: 4
+tags: []
+user_id: yosht
