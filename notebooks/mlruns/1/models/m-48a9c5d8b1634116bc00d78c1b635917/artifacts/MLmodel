@@ -1,0 +1,23 @@
+artifact_path: file:///d:/OneDrive/Documents/Content Folder/Data Science/guitar-lesson-level-prediction-project/notebooks/mlruns/1/models/m-48a9c5d8b1634116bc00d78c1b635917/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.2
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.10.1
+model_id: m-48a9c5d8b1634116bc00d78c1b635917
+model_size_bytes: 1305930
+model_uuid: m-48a9c5d8b1634116bc00d78c1b635917
+prompts: null
+run_id: 6d35814b3f464f81bbf3dc7c323b40ad
+utc_time_created: '2026-04-06 01:22:35.978231'

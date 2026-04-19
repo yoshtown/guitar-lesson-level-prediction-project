@@ -16,3 +16,4 @@ seaborn
 mord
 xgboost
 mlflow
+pytest

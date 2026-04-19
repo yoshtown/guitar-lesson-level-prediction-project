@@ -13,7 +13,6 @@ rf_model = joblib.load("rf_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
 # Map prediction to label
-#labels = ['Beginner', 'Intermediate', 'Advanced']
 classes = pipeline.classes_
 
 @app.route("/")
@@ -81,4 +80,4 @@ def health():
 
 
 if __name__ == "__main__":
-	app.run(debug=True, port=5000)
+	app.run(debug=True, port=5001)
