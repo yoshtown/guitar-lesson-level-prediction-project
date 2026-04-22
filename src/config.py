@@ -17,3 +17,5 @@ TFIDF_PARAMS = {
 
 # MLflow
 MLFLOW_EXPERIMENT_NAME = "guitar-lesson-difficulty-classifierv2"
+
+MLFLOW_TRACKING_URI = "https://dagshub.com/yoshtown/guitar-lesson-classifier.mlflow"
